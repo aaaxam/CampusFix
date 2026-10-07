@@ -295,30 +295,14 @@
 
             </div>
 
-
-            <!-- 故障紧急程度 -->
             <div class="form-group">
-
-                <label>
-                    故障紧急程度
-                </label>
+                <label>故障紧急程度</label>
 
                 <select id="priority">
-
-                    <option value="普通">
-                        普通
-                    </option>
-
-                    <option value="紧急">
-                        紧急
-                    </option>
-
-                    <option value="非常紧急">
-                        非常紧急
-                    </option>
-
+                    <option value="普通">普通</option>
+                    <option value="紧急">紧急</option>
+                    <option value="非常紧急">非常紧急</option>
                 </select>
-
             </div>
 
 
@@ -405,100 +389,6 @@
 
     <script>
 
-        /*
-         * 格式化当前时间
-         * 例如：
-         * 2026-10-07 15:28:36
-         */
-        function formatDateTime(date = new Date()) {
-
-            const pad = number =>
-                String(number).padStart(2, "0");
-
-            return (
-                date.getFullYear() +
-                "-" +
-                pad(date.getMonth() + 1) +
-                "-" +
-                pad(date.getDate()) +
-                " " +
-                pad(date.getHours()) +
-                ":" +
-                pad(date.getMinutes()) +
-                ":" +
-                pad(date.getSeconds())
-            );
-        }
-
-
-        /*
-         * 生成订单编号
-         *
-         * 格式：
-         * CF + YYYYMMDD + 4位流水号
-         *
-         * 例如：
-         * CF202610070001
-         * CF202610070002
-         * CF202610070003
-         */
-        function generateOrderNo(orders) {
-
-            const now = new Date();
-
-            const pad = number =>
-                String(number).padStart(2, "0");
-
-            const datePart =
-                now.getFullYear() +
-                pad(now.getMonth() + 1) +
-                pad(now.getDate());
-
-            const prefix =
-                "CF" + datePart;
-
-
-            /*
-             * 找出今天已经存在的订单编号
-             */
-            const todayOrders = orders.filter(order =>
-                typeof order.orderNo === "string" &&
-                order.orderNo.startsWith(prefix)
-            );
-
-
-            /*
-             * 找出当天最大的流水号
-             */
-            const maxSequence =
-                todayOrders.reduce((max, order) => {
-
-                    const sequence =
-                        parseInt(
-                            order.orderNo.slice(prefix.length),
-                            10
-                        );
-
-                    if (Number.isNaN(sequence)) {
-                        return max;
-                    }
-
-                    return Math.max(max, sequence);
-
-                }, 0);
-
-
-            /*
-             * 生成下一位流水号
-             */
-            const nextSequence =
-                String(maxSequence + 1).padStart(4, "0");
-
-
-            return prefix + nextSequence;
-        }
-
-
         function submitRepair() {
 
             // 获取表单数据
@@ -536,93 +426,43 @@
             }
 
 
-            // 获取以前的订单
-            let orders =
-                JSON.parse(
-                    localStorage.getItem("orders")
-                ) || [];
-
-
-            /*
-             * 记录当前提交时间
-             */
-            const now = new Date();
-
-            const createdAt =
-                formatDateTime(now);
-
-
-            /*
-             * 生成新的订单编号
-             */
-            const orderNo =
-                generateOrderNo(orders);
-
-
             // 创建维修订单
             const order = {
 
-                // 原有订单ID
                 id: Date.now(),
 
-                // 新增：订单编号
-                orderNo: orderNo,
-
-                // 当前登录学生
-                username:
-                    localStorage.getItem("username"),
-
-                // 故障信息
+                username: localStorage.getItem("username"),
+                
                 type: type,
 
                 priority: priority,
 
                 description: description,
 
-                // 预约信息
-                appointmentTime:
-                    appointmentTime,
+                appointmentTime: appointmentTime,
 
-                location:
-                    location,
+                location: location,
 
-                phone:
-                    phone,
+                phone: phone,
 
-                /*
-                 * 新增：订单时间
-                 *
-                 * createdAt：提交预约时间
-                 * acceptedAt：工作人员接单时间
-                 * completedAt：维修完成时间
-                 * reviewedAt：学生评价时间
-                 * cancelledAt：取消预约时间
-                 */
-                createdAt: createdAt,
-
-                acceptedAt: "",
-
-                completedAt: "",
-
-                reviewedAt: "",
-
-                cancelledAt: "",
-
-                // 订单状态
                 status: "待接单",
 
-                // 工作人员
                 worker: "",
 
-                // 维修备注
                 repairNote: "",
 
-                // 评价
                 rating: 0,
 
                 review: ""
 
             };
+
+
+            // 获取以前的订单
+            let orders =
+                JSON.parse(
+                    localStorage.getItem("orders")
+                ) || [];
 
 
             // 添加新订单
@@ -636,10 +476,7 @@
             );
 
 
-            alert(
-                "维修预约提交成功！\n\n" +
-                "订单编号：" + orderNo
-            );
+            alert("维修预约提交成功！");
 
 
             // 跳转到订单页面
@@ -650,13 +487,10 @@
 
     </script>
 
-
     <script src="auth.js"></script>
 
     <script>
-
         checkLogin("student");
-
     </script>
 
 

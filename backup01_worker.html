@@ -235,20 +235,6 @@
             text-decoration: none;
         }
 
-        .order-created {
-            margin-top: 7px;
-            color: #999;
-            font-size: 13px;
-            font-weight: normal;
-        }
-
-        .order-accepted {
-            margin-top: 5px;
-            color: #999;
-            font-size: 13px;
-            font-weight: normal;
-        }
-
         .status {
             padding: 5px 10px;
             border-radius: 6px;
@@ -435,7 +421,6 @@
         </a>
 
         <div>
-
             <span class="worker">
                 工作人员中心
             </span>
@@ -447,7 +432,6 @@
             >
                 退出登录
             </a>
-
         </div>
 
     </nav>
@@ -542,6 +526,8 @@
 
             </div>
 
+
+            <!-- 新增：已取消 -->
 
             <div class="stat">
 
@@ -704,32 +690,6 @@
 
         const ordersContainer =
             document.getElementById("orders");
-
-
-        /* =========================
-           时间格式化
-        ========================= */
-
-        function formatDateTime(date = new Date()) {
-
-            const pad = number =>
-                String(number).padStart(2, "0");
-
-            return (
-                date.getFullYear() +
-                "-" +
-                pad(date.getMonth() + 1) +
-                "-" +
-                pad(date.getDate()) +
-                " " +
-                pad(date.getHours()) +
-                ":" +
-                pad(date.getMinutes()) +
-                ":" +
-                pad(date.getSeconds())
-            );
-
-        }
 
 
         /* =========================
@@ -1223,11 +1183,6 @@
                            订单编号
                         ===================== */
 
-                        const displayOrderNo =
-                            order.orderNo ||
-                            order.id;
-
-
                         const orderTitle =
 
                             order.status === "已取消"
@@ -1241,16 +1196,7 @@
                                         order-id-cancelled
                                     "
                                 >
-                                    订单 #${displayOrderNo}
-
-                                    <div class="order-created">
-                                        提交时间：
-                                        ${
-                                            order.createdAt ||
-                                            "暂无记录"
-                                        }
-                                    </div>
-
+                                    订单 #${order.id}
                                 </span>
                             `
 
@@ -1263,29 +1209,7 @@
                                     "
                                     class="order-id"
                                 >
-                                    订单 #${displayOrderNo}
-
-                                    <div class="order-created">
-                                        提交时间：
-                                        ${
-                                            order.createdAt ||
-                                            "暂无记录"
-                                        }
-                                    </div>
-
-                                    ${
-                                        order.acceptedAt
-                                        ?
-                                        `
-                                            <div class="order-accepted">
-                                                接单时间：
-                                                ${order.acceptedAt}
-                                            </div>
-                                        `
-                                        :
-                                        ""
-                                    }
-
+                                    订单 #${order.id}
                                 </a>
                             `;
 
@@ -1460,26 +1384,6 @@
                                         </div>
 
 
-                                        ${
-                                            order.acceptedAt
-                                            ?
-                                            `
-                                                <div
-                                                    style="
-                                                        color:#888;
-                                                        font-size:13px;
-                                                        margin-top:8px;
-                                                    "
-                                                >
-                                                    接单时间：
-                                                    ${order.acceptedAt}
-                                                </div>
-                                            `
-                                            :
-                                            ""
-                                        }
-
-
                                         <div
                                             style="
                                                 color:#888;
@@ -1513,26 +1417,6 @@
                                             ✓ 维修已完成，
                                             等待学生评价
                                         </div>
-
-
-                                        ${
-                                            order.completedAt
-                                            ?
-                                            `
-                                                <div
-                                                    style="
-                                                        color:#888;
-                                                        font-size:13px;
-                                                        margin-top:7px;
-                                                    "
-                                                >
-                                                    完成时间：
-                                                    ${order.completedAt}
-                                                </div>
-                                            `
-                                            :
-                                            ""
-                                        }
                                     `
 
                                     :
@@ -1556,46 +1440,6 @@
                                         >
                                             ✓ 订单已完成
                                         </div>
-
-
-                                        ${
-                                            order.completedAt
-                                            ?
-                                            `
-                                                <div
-                                                    style="
-                                                        color:#888;
-                                                        font-size:13px;
-                                                        margin-top:7px;
-                                                    "
-                                                >
-                                                    完成时间：
-                                                    ${order.completedAt}
-                                                </div>
-                                            `
-                                            :
-                                            ""
-                                        }
-
-
-                                        ${
-                                            order.reviewedAt
-                                            ?
-                                            `
-                                                <div
-                                                    style="
-                                                        color:#888;
-                                                        font-size:13px;
-                                                        margin-top:7px;
-                                                    "
-                                                >
-                                                    评价时间：
-                                                    ${order.reviewedAt}
-                                                </div>
-                                            `
-                                            :
-                                            ""
-                                        }
 
 
                                         ${
@@ -1697,25 +1541,6 @@
                                             🚫
                                             学生已取消本次维修预约，
                                             该订单不会继续进入维修流程。
-
-                                            ${
-                                                order.cancelledAt
-                                                ?
-                                                `
-                                                    <div
-                                                        style="
-                                                            margin-top:6px;
-                                                            font-size:13px;
-                                                        "
-                                                    >
-                                                        取消时间：
-                                                        ${order.cancelledAt}
-                                                    </div>
-                                                `
-                                                :
-                                                ""
-                                            }
-
                                         </div>
                                     `
 
@@ -1808,33 +1633,13 @@
             }
 
 
-            /*
-             * 修改订单状态
-             */
-
             order.status =
                 "已接单";
 
 
-            /*
-             * 记录工作人员
-             */
-
             order.worker =
                 "工作人员";
 
-
-            /*
-             * 记录接单时间
-             */
-
-            order.acceptedAt =
-                formatDateTime(new Date());
-
-
-            /*
-             * 保存订单
-             */
 
             localStorage.setItem(
                 "orders",

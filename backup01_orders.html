@@ -116,16 +116,6 @@
             font-weight: bold;
         }
 
-        .order-created {
-            margin-top: 7px;
-
-            color: #999;
-
-            font-size: 13px;
-
-            font-weight: normal;
-        }
-
 
         /* =========================
            状态
@@ -162,6 +152,8 @@
             background: #f0f9eb;
             color: #389e0d;
         }
+
+        /* 新增：已取消 */
 
         .status-cancelled {
             background: #f5f5f5;
@@ -473,131 +465,6 @@
 
 
         /* =========================
-           订单时间线
-        ========================= */
-
-        .timeline-box {
-            margin-top: 25px;
-
-            padding: 20px;
-
-            background: #fafafa;
-
-            border-radius: 10px;
-
-            border: 1px solid #eee;
-        }
-
-        .timeline-title {
-            font-size: 16px;
-
-            font-weight: bold;
-
-            margin-bottom: 20px;
-        }
-
-        .timeline {
-            position: relative;
-
-            margin-left: 8px;
-        }
-
-        .timeline::before {
-            content: "";
-
-            position: absolute;
-
-            left: 6px;
-
-            top: 8px;
-
-            bottom: 8px;
-
-            width: 2px;
-
-            background: #e5e5e5;
-        }
-
-        .timeline-item {
-            position: relative;
-
-            display: flex;
-
-            gap: 15px;
-
-            padding-bottom: 20px;
-        }
-
-        .timeline-item:last-child {
-            padding-bottom: 0;
-        }
-
-        .timeline-dot {
-            position: relative;
-
-            z-index: 2;
-
-            flex-shrink: 0;
-
-            width: 14px;
-
-            height: 14px;
-
-            margin-top: 3px;
-
-            border-radius: 50%;
-
-            background: #d9d9d9;
-
-            border: 3px solid #fafafa;
-
-            box-sizing: content-box;
-        }
-
-        .timeline-item.active .timeline-dot {
-            background: #1677ff;
-        }
-
-        .timeline-item.cancelled .timeline-dot {
-            background: #999;
-        }
-
-        .timeline-content {
-            flex: 1;
-        }
-
-        .timeline-name {
-            font-size: 14px;
-
-            font-weight: bold;
-
-            color: #555;
-        }
-
-        .timeline-item.active .timeline-name {
-            color: #1677ff;
-        }
-
-        .timeline-item.cancelled .timeline-name {
-            color: #999;
-        }
-
-        .timeline-time {
-            margin-top: 5px;
-
-            font-size: 12px;
-
-            color: #999;
-        }
-
-        .timeline-empty {
-            color: #aaa;
-
-            font-size: 13px;
-        }
-
-
-        /* =========================
            没有订单
         ========================= */
 
@@ -850,13 +717,6 @@
             order.status = "已取消";
 
 
-            /*
-             * 记录取消时间
-             */
-            order.cancelledAt =
-                formatDateTime(new Date());
-
-
             /* 保存 */
 
             localStorage.setItem(
@@ -871,197 +731,6 @@
             /* 刷新页面 */
 
             window.location.reload();
-
-        }
-
-
-
-        /* =========================
-           时间格式化
-        ========================= */
-
-        function formatDateTime(date = new Date()) {
-
-            const pad = number =>
-                String(number).padStart(2, "0");
-
-
-            return (
-                date.getFullYear() +
-                "-" +
-                pad(date.getMonth() + 1) +
-                "-" +
-                pad(date.getDate()) +
-                " " +
-                pad(date.getHours()) +
-                ":" +
-                pad(date.getMinutes()) +
-                ":" +
-                pad(date.getSeconds())
-            );
-
-        }
-
-
-
-        /* =========================
-           时间线时间显示
-        ========================= */
-
-        function timelineTime(time) {
-
-            return time || "暂无记录";
-
-        }
-
-
-
-        /* =========================
-           生成订单时间线
-        ========================= */
-
-        function generateTimeline(order) {
-
-            /*
-             * 已取消订单
-             */
-            if (order.status === "已取消") {
-
-                return `
-
-                    <div class="timeline-box">
-
-                        <div class="timeline-title">
-                            🕒 订单时间线
-                        </div>
-
-                        <div class="timeline">
-
-                            <div class="timeline-item active">
-
-                                <div class="timeline-dot"></div>
-
-                                <div class="timeline-content">
-
-                                    <div class="timeline-name">
-                                        提交预约
-                                    </div>
-
-                                    <div class="timeline-time">
-                                        ${timelineTime(order.createdAt)}
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-
-                            <div class="timeline-item cancelled">
-
-                                <div class="timeline-dot"></div>
-
-                                <div class="timeline-content">
-
-                                    <div class="timeline-name">
-                                        学生取消预约
-                                    </div>
-
-                                    <div class="timeline-time">
-                                        ${timelineTime(order.cancelledAt)}
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                `;
-
-            }
-
-
-            /*
-             * 正常维修流程
-             */
-            const steps = [
-
-                {
-                    name: "提交预约",
-                    time: order.createdAt,
-                    active: true
-                },
-
-                {
-                    name: "工作人员接单",
-                    time: order.acceptedAt,
-                    active: [
-                        "已接单",
-                        "待评价",
-                        "已完成"
-                    ].includes(order.status)
-                },
-
-                {
-                    name: "完成维修",
-                    time: order.completedAt,
-                    active: [
-                        "待评价",
-                        "已完成"
-                    ].includes(order.status)
-                },
-
-                {
-                    name: "用户评价",
-                    time: order.reviewedAt,
-                    active: order.status === "已完成"
-                }
-
-            ];
-
-
-            return `
-
-                <div class="timeline-box">
-
-                    <div class="timeline-title">
-                        🕒 订单时间线
-                    </div>
-
-                    <div class="timeline">
-
-                        ${steps.map(step => `
-
-                            <div class="
-                                timeline-item
-                                ${step.active ? "active" : ""}
-                            ">
-
-                                <div class="timeline-dot"></div>
-
-                                <div class="timeline-content">
-
-                                    <div class="timeline-name">
-                                        ${step.name}
-                                    </div>
-
-                                    <div class="timeline-time">
-                                        ${timelineTime(step.time)}
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        `).join("")}
-
-                    </div>
-
-                </div>
-
-            `;
 
         }
 
@@ -1197,7 +866,7 @@
 
 
                     /* =====================
-                       已取消进度
+                       已取消订单
                     ===================== */
 
                     const cancelledProgress =
@@ -1437,14 +1106,7 @@
                                 <div class="order-id">
 
                                     订单编号：
-                                    ${order.orderNo || order.id}
-
-                                    <div class="order-created">
-
-                                        提交时间：
-                                        ${order.createdAt || "暂无记录"}
-
-                                    </div>
+                                    ${order.id}
 
                                 </div>
 
@@ -1476,12 +1138,6 @@
                             <!-- 维修进度 -->
 
                             ${cancelledProgress}
-
-
-
-                            <!-- 订单时间线 -->
-
-                            ${generateTimeline(order)}
 
 
 
