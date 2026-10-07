@@ -283,6 +283,24 @@
     <script>
 
 
+        /*
+         * 格式化时间
+         *
+         * 格式：
+         * 2026-10-07 18:27:16
+         */
+
+        function formatDateTime(date = new Date()) {
+
+            const pad = n =>
+                String(n).padStart(2, "0");
+
+            return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
+
+        }
+
+
+
         function loadReviews() {
 
 
@@ -357,6 +375,21 @@
                     );
 
 
+                /*
+                 * 显示正式订单号
+                 *
+                 * 新订单：
+                 * CF202610070001
+                 *
+                 * 旧订单如果没有 orderNo：
+                 * CF + 原来的 ID
+                 */
+
+                const displayOrderNo =
+                    order.orderNo ||
+                    "CF" + order.id;
+
+
                 reviewList.innerHTML += `
 
                     <div class="order-card">
@@ -365,7 +398,7 @@
                         <div class="order-title">
 
                             维修订单：
-                            ${order.id}
+                            ${displayOrderNo}
 
                         </div>
 
@@ -543,17 +576,36 @@
             }
 
 
+            // 保存评分
+
             order.rating =
                 Number(rating);
 
+
+            // 保存评价内容
 
             order.review =
                 review;
 
 
+            /*
+             * 记录学生评价时间
+             *
+             * 工作人员后台的订单时间线
+             * 会读取这个字段
+             */
+
+            order.reviewedAt =
+                formatDateTime();
+
+
+            // 评价完成后订单变为已完成
+
             order.status =
                 "已完成";
 
+
+            // 保存订单数据
 
             localStorage.setItem(
                 "orders",
@@ -565,6 +617,8 @@
                 "评价提交成功！"
             );
 
+
+            // 刷新评价页面
 
             loadReviews();
 
