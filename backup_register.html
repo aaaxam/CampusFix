@@ -15,7 +15,7 @@
         }
 
         body {
-            font-family: Arial, "Microsoft YaHei", sans-serif;
+            font-family: Arial, sans-serif;
             background: #f5f7fa;
             color: #333;
         }
@@ -23,15 +23,11 @@
         .navbar {
             height: 64px;
             background: #ffffff;
-
             display: flex;
             align-items: center;
             justify-content: space-between;
-
             padding: 0 40px;
-
-            box-shadow:
-                0 2px 8px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
         }
 
         .logo {
@@ -44,36 +40,26 @@
         .container {
             width: 100%;
             max-width: 420px;
-
             margin: 70px auto;
-
             padding: 0 20px;
         }
 
         .register-box {
             background: #ffffff;
-
             padding: 35px;
-
             border-radius: 14px;
-
-            box-shadow:
-                0 4px 20px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
         }
 
         h1 {
             text-align: center;
-
             margin-bottom: 10px;
-
             font-size: 28px;
         }
 
         .subtitle {
             text-align: center;
-
             color: #888;
-
             margin-bottom: 30px;
         }
 
@@ -83,23 +69,16 @@
 
         label {
             display: block;
-
             margin-bottom: 8px;
-
             font-weight: bold;
         }
 
         input {
             width: 100%;
-
             padding: 12px;
-
             border: 1px solid #ddd;
-
             border-radius: 8px;
-
             font-size: 15px;
-
             outline: none;
         }
 
@@ -109,19 +88,12 @@
 
         .register-btn {
             width: 100%;
-
             padding: 13px;
-
             border: none;
-
             border-radius: 8px;
-
             background: #333;
-
             color: white;
-
             font-size: 16px;
-
             cursor: pointer;
         }
 
@@ -131,89 +103,49 @@
 
         .login-link {
             text-align: center;
-
             margin-top: 20px;
-
             color: #888;
         }
 
         .login-link a {
             color: #333;
-
             text-decoration: none;
-
             font-weight: bold;
         }
 
         .back-home {
             text-align: center;
-
             margin-top: 15px;
         }
 
         .back-home a {
             color: #888;
-
             text-decoration: none;
-        }
-
-        .tip {
-            margin-top: 15px;
-
-            padding: 10px 12px;
-
-            background: #f6f8fa;
-
-            border-radius: 8px;
-
-            color: #888;
-
-            font-size: 12px;
-
-            line-height: 1.6;
-
-            text-align: center;
         }
     </style>
 </head>
 
-
 <body>
-
-
-    <!-- 顶部导航 -->
 
     <nav class="navbar">
 
-        <a
-            href="index.html"
-            class="logo"
-        >
-            🖥️ CampusFix
+        <a href="index.html" class="logo">
+           🖥️ CampusFix
         </a>
 
     </nav>
 
 
-
-    <!-- 注册区域 -->
-
     <div class="container">
 
         <div class="register-box">
 
-            <h1>
-                注册账号
-            </h1>
-
+            <h1>注册账号</h1>
 
             <p class="subtitle">
                 创建你的 CampusFix 学生账号
             </p>
 
-
-
-            <!-- 用户名 -->
 
             <div class="form-group">
 
@@ -221,18 +153,16 @@
                     用户名
                 </label>
 
+                <!-- 20261007到此一游 -->
+
                 <input
                     type="text"
                     id="username"
                     placeholder="请输入用户名"
-                    maxlength="20"
                 >
 
             </div>
 
-
-
-            <!-- 密码 -->
 
             <div class="form-group">
 
@@ -249,9 +179,6 @@
             </div>
 
 
-
-            <!-- 确认密码 -->
-
             <div class="form-group">
 
                 <label for="confirmPassword">
@@ -267,9 +194,6 @@
             </div>
 
 
-
-            <!-- 注册按钮 -->
-
             <button
                 class="register-btn"
                 onclick="register()"
@@ -277,17 +201,6 @@
                 注册
             </button>
 
-
-
-            <!-- 提示 -->
-
-            <div class="tip">
-                注册账号默认为学生账号
-            </div>
-
-
-
-            <!-- 登录 -->
 
             <div class="login-link">
 
@@ -299,9 +212,6 @@
 
             </div>
 
-
-
-            <!-- 返回首页 -->
 
             <div class="back-home">
 
@@ -316,162 +226,43 @@
     </div>
 
 
-
     <script>
 
         function register() {
 
-            /* =========================
-               获取输入内容
-            ========================= */
-
             const username =
-                document
-                    .getElementById("username")
-                    .value
-                    .trim();
-
+                document.getElementById("username").value.trim();
 
             const password =
-                document
-                    .getElementById("password")
-                    .value;
-
+                document.getElementById("password").value;
 
             const confirmPassword =
-                document
-                    .getElementById("confirmPassword")
-                    .value;
+                document.getElementById("confirmPassword").value;
 
 
-
-            /* =========================
-               基础检查
-            ========================= */
-
-            if (
-                !username ||
-                !password ||
-                !confirmPassword
-            ) {
+            if (!username || !password || !confirmPassword) {
 
                 alert("请填写完整信息！");
 
                 return;
-
             }
 
 
+            if (password !== confirmPassword) {
 
-            /* =========================
-               用户名长度
-            ========================= */
-
-            if (
-                username.length < 3
-            ) {
-
-                alert("用户名长度不能少于3位！");
+                alert("两次输入的密码不一致！");
 
                 return;
-
             }
 
 
-
-            /* =========================
-               用户名格式
-            ========================= */
-
-            const usernamePattern =
-                /^[a-zA-Z0-9_]+$/;
-
-
-            if (
-                !usernamePattern.test(username)
-            ) {
-
-                alert(
-                    "用户名只能使用字母、数字和下划线！"
-                );
-
-                return;
-
-            }
-
-
-
-            /* =========================
-               密码检查
-            ========================= */
-
-            if (
-                password.length < 6
-            ) {
+            if (password.length < 6) {
 
                 alert("密码长度不能少于6位！");
 
                 return;
-
             }
 
-
-
-            /* =========================
-               确认密码
-            ========================= */
-
-            if (
-                password !== confirmPassword
-            ) {
-
-                alert(
-                    "两次输入的密码不一致！"
-                );
-
-                return;
-
-            }
-
-
-
-            /* =========================
-               系统保留用户名
-            ========================= */
-
-            const reservedUsernames = [
-
-                "student",
-                "worker",
-                "admin",
-                "administrator",
-                "system",
-                "root",
-                "test",
-                "guest"
-
-            ];
-
-
-            if (
-                reservedUsernames.includes(
-                    username.toLowerCase()
-                )
-            ) {
-
-                alert(
-                    "该用户名属于系统保留账号，不能注册！"
-                );
-
-                return;
-
-            }
-
-
-
-            /* =========================
-               获取已有用户
-            ========================= */
 
             let users =
                 JSON.parse(
@@ -479,34 +270,19 @@
                 );
 
 
-
-            /* =========================
-               检查用户名是否存在
-            ========================= */
-
             const exists =
                 users.some(
-                    user =>
-                        user.username.toLowerCase() ===
-                        username.toLowerCase()
+                    user => user.username === username
                 );
 
 
             if (exists) {
 
-                alert(
-                    "用户名已经存在！"
-                );
+                alert("用户名已经存在！");
 
                 return;
-
             }
 
-
-
-            /* =========================
-               创建新用户
-            ========================= */
 
             const newUser = {
 
@@ -519,14 +295,8 @@
             };
 
 
-
             users.push(newUser);
 
-
-
-            /* =========================
-               保存用户
-            ========================= */
 
             localStorage.setItem(
                 "users",
@@ -534,19 +304,10 @@
             );
 
 
-
-            /* =========================
-               注册成功
-            ========================= */
-
-            alert(
-                "注册成功！请登录。"
-            );
-
+            alert("注册成功！请登录。");
 
             window.location.href =
                 "login.html";
-
         }
 
     </script>

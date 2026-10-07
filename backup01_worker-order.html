@@ -122,86 +122,6 @@
             margin-right: 8px;
         }
 
-        /* 时间线 */
-
-        .timeline-title {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 25px;
-        }
-
-        .timeline {
-            position: relative;
-            padding-left: 30px;
-        }
-
-        .timeline::before {
-            content: "";
-            position: absolute;
-            left: 6px;
-            top: 8px;
-            bottom: 8px;
-            width: 2px;
-            background: #e5e5e5;
-        }
-
-        .timeline-item {
-            position: relative;
-            margin-bottom: 25px;
-        }
-
-        .timeline-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .timeline-dot {
-            position: absolute;
-            left: -30px;
-            top: 2px;
-
-            width: 14px;
-            height: 14px;
-
-            border-radius: 50%;
-            background: #d9d9d9;
-
-            border: 3px solid white;
-
-            box-shadow: 0 0 0 1px #ddd;
-        }
-
-        .timeline-item.active .timeline-dot {
-            background: #1677ff;
-            box-shadow: 0 0 0 1px #1677ff;
-        }
-
-        .timeline-name {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .timeline-time {
-            color: #999;
-            font-size: 13px;
-        }
-
-        .timeline-item.pending .timeline-name {
-            color: #999;
-        }
-
-        /* 取消状态 */
-
-        .cancelled-box {
-            margin-top: 25px;
-            padding: 15px;
-
-            background: #f5f5f5;
-            border-radius: 8px;
-
-            color: #888;
-            text-align: center;
-        }
-
         .form-group {
             margin-bottom: 20px;
         }
@@ -236,12 +156,6 @@
 
         textarea:focus {
             border-color: #1677ff;
-        }
-
-        textarea:disabled {
-            background: #f7f7f7;
-            color: #777;
-            cursor: not-allowed;
         }
 
         .btn {
@@ -304,12 +218,6 @@
                 grid-column: auto;
             }
 
-            .order-header {
-                align-items: flex-start;
-                gap: 15px;
-                flex-direction: column;
-            }
-
         }
 
     </style>
@@ -360,25 +268,6 @@
             class="card"
             id="orderInfo"
         ></div>
-
-
-        <!-- 订单时间线 -->
-
-        <div
-            class="card"
-            id="timelineCard"
-        >
-
-            <div class="timeline-title">
-                📋 订单进度
-            </div>
-
-            <div
-                class="timeline"
-                id="timeline"
-            ></div>
-
-        </div>
 
 
         <!-- 维修记录 -->
@@ -446,23 +335,6 @@
             );
 
 
-        const timelineCard =
-            document.getElementById(
-                "timelineCard"
-            );
-
-
-        // 格式化时间
-        function formatDateTime(date = new Date()) {
-
-            const pad = n =>
-                String(n).padStart(2, "0");
-
-            return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
-
-        }
-
-
         // 找不到订单
         if (orderIndex === -1) {
 
@@ -482,8 +354,6 @@
 
             `;
 
-            timelineCard.style.display = "none";
-
             document.getElementById(
                 "repairForm"
             ).style.display = "none";
@@ -498,13 +368,6 @@
                 orders[orderIndex];
 
 
-            // 新订单编号
-            const orderNo =
-                order.orderNo ||
-                `CF${order.id}`;
-
-
-            // 显示订单详情
             orderInfo.innerHTML = `
 
                 <div class="order-header">
@@ -512,7 +375,7 @@
                     <div class="order-id">
 
                         订单编号：
-                        ${orderNo}
+                        ${order.id}
 
                     </div>
 
@@ -534,28 +397,6 @@
                         </span>
 
                         ${order.type}
-
-                    </div>
-
-
-                    <div>
-
-                        <span class="label">
-                            故障优先级：
-                        </span>
-
-                        ${order.priority || "普通"}
-
-                    </div>
-
-
-                    <div>
-
-                        <span class="label">
-                            提交时间：
-                        </span>
-
-                        ${order.createdAt || "暂无记录"}
 
                     </div>
 
@@ -593,17 +434,6 @@
                     </div>
 
 
-                    <div>
-
-                        <span class="label">
-                            工作人员：
-                        </span>
-
-                        ${order.worker || "暂未接单"}
-
-                    </div>
-
-
                     <div class="description">
 
                         <span class="label">
@@ -619,142 +449,8 @@
             `;
 
 
-            // 生成时间线
-            const timeline =
-                document.getElementById(
-                    "timeline"
-                );
-
-
-            if (order.status === "已取消") {
-
-                timeline.innerHTML = `
-
-                    <div class="timeline-item active">
-
-                        <div class="timeline-dot"></div>
-
-                        <div class="timeline-name">
-                            提交预约
-                        </div>
-
-                        <div class="timeline-time">
-                            ${order.createdAt || "暂无记录"}
-                        </div>
-
-                    </div>
-
-
-                    <div class="timeline-item active">
-
-                        <div class="timeline-dot"></div>
-
-                        <div class="timeline-name">
-                            学生取消预约
-                        </div>
-
-                        <div class="timeline-time">
-                            ${order.cancelledAt || "暂无记录"}
-                        </div>
-
-                    </div>
-
-                `;
-
-            } else {
-
-                timeline.innerHTML = `
-
-                    <div class="timeline-item active">
-
-                        <div class="timeline-dot"></div>
-
-                        <div class="timeline-name">
-                            提交预约
-                        </div>
-
-                        <div class="timeline-time">
-                            ${order.createdAt || "暂无记录"}
-                        </div>
-
-                    </div>
-
-
-                    <div class="timeline-item ${order.acceptedAt ? "active" : "pending"}">
-
-                        <div class="timeline-dot"></div>
-
-                        <div class="timeline-name">
-                            工作人员接单
-                        </div>
-
-                        <div class="timeline-time">
-                            ${order.acceptedAt || "暂无记录"}
-                        </div>
-
-                    </div>
-
-
-                    <div class="timeline-item ${order.completedAt ? "active" : "pending"}">
-
-                        <div class="timeline-dot"></div>
-
-                        <div class="timeline-name">
-                            完成维修
-                        </div>
-
-                        <div class="timeline-time">
-                            ${order.completedAt || "暂无记录"}
-                        </div>
-
-                    </div>
-
-
-                    <div class="timeline-item ${order.reviewedAt ? "active" : "pending"}">
-
-                        <div class="timeline-dot"></div>
-
-                        <div class="timeline-name">
-                            学生评价
-                        </div>
-
-                        <div class="timeline-time">
-                            ${order.reviewedAt || "暂无记录"}
-                        </div>
-
-                    </div>
-
-                `;
-
-            }
-
-
-            // 如果已经取消
-            if (order.status === "已取消") {
-
-                document.getElementById(
-                    "repairForm"
-                ).style.display = "none";
-
-
-                const cancelledBox =
-                    document.createElement("div");
-
-                cancelledBox.className =
-                    "cancelled-box";
-
-                cancelledBox.innerHTML =
-                    "🚫 本次维修预约已取消，无法继续处理。";
-
-                orderInfo.appendChild(
-                    cancelledBox
-                );
-
-            }
-
-
-            // 如果已经完成维修
-            else if (
+            // 如果已经完成
+            if (
                 order.status === "待评价" ||
                 order.status === "已完成"
             ) {
@@ -782,38 +478,6 @@
         // 完成维修
         function completeRepair() {
 
-            if (orderIndex === -1) {
-                return;
-            }
-
-
-            const order =
-                orders[orderIndex];
-
-
-            // 防止已取消订单继续完成
-            if (order.status === "已取消") {
-
-                alert("该订单已经取消，无法完成维修！");
-
-                return;
-
-            }
-
-
-            // 防止重复完成
-            if (
-                order.status === "待评价" ||
-                order.status === "已完成"
-            ) {
-
-                alert("该订单已经完成维修！");
-
-                return;
-
-            }
-
-
             const note =
                 document.getElementById(
                     "repairNote"
@@ -829,23 +493,14 @@
             }
 
 
-            // 保存维修记录
-            order.repairNote =
+            orders[orderIndex].repairNote =
                 note;
 
 
-            // 记录完成时间
-            order.completedAt =
-                order.completedAt ||
-                formatDateTime();
-
-
-            // 修改订单状态
-            order.status =
+            orders[orderIndex].status =
                 "待评价";
 
 
-            // 保存订单
             localStorage.setItem(
                 "orders",
                 JSON.stringify(orders)
@@ -862,15 +517,11 @@
 
     </script>
 
-
     <script src="auth.js"></script>
 
     <script>
-
         checkLogin("worker");
-
     </script>
-
 
 </body>
 
