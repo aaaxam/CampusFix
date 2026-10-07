@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>工作人员后台 - CampusFix</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, "Microsoft YaHei", sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        /* 顶部导航 */
+
+        .navbar {
+            height: 70px;
+            background: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 50px;
+
+            box-shadow:
+                0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            color: #1677ff;
+        }
+
+        .worker {
+            color: #666;
+            font-size: 14px;
+        }
+
+
+        /* 主容器 */
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+
+        /* 标题 */
+
+        .title {
+            margin-bottom: 25px;
+        }
+
+        .title h1 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .title p {
+            color: #888;
+        }
+
+
+        /* 数据统计 */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+
+            box-shadow:
+                0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-title {
+            color: #888;
+            margin-bottom: 10px;
+        }
+
+        .stat-number {
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+
+        /* 筛选 */
+
+        .filter-box {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .filter-box select {
+            padding: 10px 15px;
+
+            border: 1px solid #ddd;
+            border-radius: 8px;
+
+            font-size: 14px;
+
+            background: white;
+
+            cursor: pointer;
+        }
+
+
+        /* 订单 */
+
+        .order-card {
+            background: white;
+
+            padding: 25px;
+
+            margin-bottom: 20px;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 20px;
+        }
+
+        .order-id {
+            font-weight: bold;
+        }
+
+
+        /* 状态 */
+
+        .status {
+            padding: 6px 12px;
+
+            border-radius: 20px;
+
+            font-size: 13px;
+
+            background: #fff7e6;
+            color: #d46b08;
+        }
+
+
+        /* 订单信息 */
+
+        .info {
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 15px;
+
+            border-top: 1px solid #eee;
+
+            padding-top: 20px;
+        }
+
+        .description {
+            grid-column: 1 / -1;
+
+            line-height: 1.7;
+        }
+
+        .label {
+            color: #999;
+
+            margin-right: 8px;
+        }
+
+
+        /* 接单按钮 */
+
+        .accept-btn {
+            margin-top: 20px;
+
+            padding: 11px 25px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #1677ff;
+
+            color: white;
+
+            font-size: 14px;
+
+            cursor: pointer;
+        }
+
+        .accept-btn:hover {
+            background: #0958d9;
+        }
+
+
+        /* 已完成订单 */
+
+        .completed-text {
+            margin-top: 20px;
+
+            color: #52c41a;
+
+            font-size: 14px;
+        }
+
+
+        /* 学生评价 */
+
+        .review-box {
+            margin-top: 20px;
+
+            padding: 18px;
+
+            background: #f6f8fa;
+
+            border-radius: 10px;
+        }
+
+        .review-title {
+            font-weight: bold;
+
+            margin-bottom: 10px;
+
+            color: #333;
+        }
+
+        .review-rating {
+            margin-bottom: 10px;
+
+            color: #faad14;
+
+            font-size: 16px;
+        }
+
+        .review-content {
+            color: #666;
+
+            line-height: 1.7;
+
+            word-break: break-word;
+        }
+
+
+        /* 空状态 */
+
+        .empty {
+            background: white;
+
+            padding: 60px 20px;
+
+            border-radius: 15px;
+
+            text-align: center;
+
+            color: #999;
+        }
+
+        .empty-icon {
+            font-size: 50px;
+
+            margin-bottom: 15px;
+        }
+
+        .logout {
+            display: inline-block;
+
+            margin-top: 35px;
+
+            padding: 12px 25px;
+
+            background: #fff;
+
+            color: #666;
+
+            border: 1px solid #ddd;
+
+            border-radius: 8px;
+
+            text-decoration: none;
+        }
+
+
+        /* 手机端 */
+
+        @media (max-width: 900px) {
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                padding: 0 20px;
+            }
+
+            .title h1 {
+                font-size: 25px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .info {
+                grid-template-columns: 1fr;
+            }
+
+            .description {
+                grid-column: auto;
+            }
+
+            .order-header {
+                align-items: flex-start;
+
+                gap: 10px;
+
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- 顶部导航 -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            🖥️ CampusFix
+        </div>
+
+        <div class="worker">
+            🧑‍🔧 工作人员后台
+        </div>
+
+    </nav>
+
+
+    <main class="container">
+
+
+        <!-- 页面标题 -->
+
+        <div class="title">
+
+            <h1>
+                🧑‍🔧 维修管理
+            </h1>
+
+            <p>
+                查看并处理学生提交的维修申请
+            </p>
+
+        </div>
+
+
+        <!-- 数据统计 -->
+
+        <div class="stats">
+
+
+            <div class="stat">
+
+                <div class="stat-title">
+                    总订单
+                </div>
+
+                <div
+                    class="stat-number"
+                    id="total"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-title">
+                    待接单
+                </div>
+
+                <div
+                    class="stat-number"
+                    id="pending"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-title">
+                    已接单
+                </div>
+
+                <div
+                    class="stat-number"
+                    id="accepted"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-title">
+                    待评价
+                </div>
+
+                <div
+                    class="stat-number"
+                    id="waitingReview"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-title">
+                    已完成
+                </div>
+
+                <div
+                    class="stat-number"
+                    id="completed"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- 订单筛选 -->
+
+        <div class="filter-box">
+
+            <select
+                id="statusFilter"
+                onchange="filterOrders()"
+            >
+
+                <option value="全部">
+                    全部订单
+                </option>
+
+                <option value="待接单">
+                    待接单
+                </option>
+
+                <option value="已接单">
+                    已接单
+                </option>
+
+                <option value="待评价">
+                    待评价
+                </option>
+
+                <option value="已完成">
+                    已完成
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- 订单列表 -->
+
+        <div id="orders"></div>
+
+
+        <!-- 退出登录 -->
+
+        <a
+            href="index.html"
+            class="logout"
+            onclick="logout();"
+        >
+            退出登录
+        </a>
+
+
+    </main>
+
+
+    <script>
+
+
+        // 从浏览器本地读取订单
+
+        let orders =
+            JSON.parse(
+                localStorage.getItem("orders")
+            ) || [];
+
+
+        const ordersContainer =
+            document.getElementById("orders");
+
+
+        // 更新统计数据
+
+        function updateStats() {
+
+
+            document.getElementById("total")
+                .textContent = orders.length;
+
+
+            const pending =
+                orders.filter(
+                    order =>
+                        order.status === "待接单"
+                ).length;
+
+
+            const accepted =
+                orders.filter(
+                    order =>
+                        order.status === "已接单"
+                ).length;
+
+
+            const waitingReview =
+                orders.filter(
+                    order =>
+                        order.status === "待评价"
+                ).length;
+
+
+            const completed =
+                orders.filter(
+                    order =>
+                        order.status === "已完成"
+                ).length;
+
+
+            document.getElementById("pending")
+                .textContent = pending;
+
+
+            document.getElementById("accepted")
+                .textContent = accepted;
+
+
+            document.getElementById("waitingReview")
+                .textContent = waitingReview;
+
+
+            document.getElementById("completed")
+                .textContent = completed;
+
+        }
+
+
+        // 显示全部订单
+
+        function renderOrders() {
+
+
+            if (orders.length === 0) {
+
+
+                ordersContainer.innerHTML = `
+
+                    <div class="empty">
+
+                        <div class="empty-icon">
+                            📋
+                        </div>
+
+                        <p>
+                            暂时没有维修订单
+                        </p>
+
+                    </div>
+
+                `;
+
+
+                return;
+
+            }
+
+
+            renderFilteredOrders(orders);
+
+        }
+
+
+        // 筛选订单
+
+        function filterOrders() {
+
+
+            const filter =
+                document.getElementById(
+                    "statusFilter"
+                ).value;
+
+
+            if (filter === "全部") {
+
+                renderOrders();
+
+                return;
+
+            }
+
+
+            const filteredOrders =
+                orders.filter(
+                    order =>
+                        order.status === filter
+                );
+
+
+            renderFilteredOrders(
+                filteredOrders
+            );
+
+        }
+
+
+        // 显示筛选后的订单
+
+        function renderFilteredOrders(
+            filteredOrders
+        ) {
+
+
+            if (
+                filteredOrders.length === 0
+            ) {
+
+
+                ordersContainer.innerHTML = `
+
+                    <div class="empty">
+
+                        <div class="empty-icon">
+                            🔍
+                        </div>
+
+                        <p>
+                            没有符合条件的订单
+                        </p>
+
+                    </div>
+
+                `;
+
+
+                return;
+
+            }
+
+
+            ordersContainer.innerHTML =
+
+                filteredOrders.map(
+                    order => {
+
+
+                        const index =
+                            orders.findIndex(
+                                item =>
+                                    item.id === order.id
+                            );
+
+
+                        return `
+
+                            <div class="order-card">
+
+
+                                <div class="order-header">
+
+
+                                    <a
+                                        href="worker-order.html?id=${order.id}"
+                                        class="order-id"
+                                        style="
+                                            text-decoration: none;
+                                            color: #1677ff;
+                                        "
+                                    >
+
+                                        订单编号：
+                                        ${order.id}
+
+                                    </a>
+
+
+                                    <div class="status">
+
+                                        ${order.status}
+
+                                    </div>
+
+
+                                </div>
+
+
+                                <div class="info">
+
+
+                                    <div>
+
+                                        <span class="label">
+                                            故障类型：
+                                        </span>
+
+                                        ${order.type}
+
+                                    </div>
+
+
+                                    <div>
+
+                                        <span class="label">
+                                            预约时间：
+                                        </span>
+
+                                        ${order.appointmentTime}
+
+                                    </div>
+
+
+                                    <div>
+
+                                        <span class="label">
+                                            维修地点：
+                                        </span>
+
+                                        ${order.location}
+
+                                    </div>
+
+
+                                    <div>
+
+                                        <span class="label">
+                                            联系方式：
+                                        </span>
+
+                                        ${order.phone}
+
+                                    </div>
+
+
+                                    <div class="description">
+
+                                        <span class="label">
+                                            故障描述：
+                                        </span>
+
+                                        ${order.description}
+
+                                    </div>
+
+
+                                </div>
+
+
+                                ${
+                                    order.status === "待接单"
+
+                                    ?
+
+                                    `
+
+                                    <button
+                                        class="accept-btn"
+                                        onclick="acceptOrder(${index})"
+                                    >
+
+                                        接受订单
+
+                                    </button>
+
+                                    `
+
+                                    :
+
+                                    ""
+
+                                }
+
+
+                                ${
+                                    order.status === "已完成"
+
+                                    ?
+
+                                    `
+
+                                    <div class="completed-text">
+
+                                        ✓ 该订单已完成
+
+                                    </div>
+
+
+                                    ${
+                                        order.rating
+                                        ?
+
+                                        `
+
+                                        <div class="review-box">
+
+                                            <div class="review-title">
+
+                                                ⭐ 学生评价
+
+                                            </div>
+
+
+                                            <div class="review-rating">
+
+                                                ${"⭐".repeat(order.rating)}
+
+                                                <span
+                                                    style="
+                                                        color: #888;
+                                                        font-size: 14px;
+                                                        margin-left: 8px;
+                                                    "
+                                                >
+                                                    ${order.rating} / 5
+                                                </span>
+
+                                            </div>
+
+
+                                            <div class="review-content">
+
+                                                ${order.review || "学生未填写评价内容"}
+
+                                            </div>
+
+                                        </div>
+
+                                        `
+
+                                        :
+
+                                        ""
+
+                                    }
+
+                                    `
+
+                                    :
+
+                                    ""
+
+                                }
+
+
+                            </div>
+
+                        `;
+
+                    }
+
+                ).join("");
+
+        }
+
+
+        // 接受订单
+
+        function acceptOrder(index) {
+
+
+            orders[index].status =
+                "已接单";
+
+
+            orders[index].worker =
+                "工作人员";
+
+
+            localStorage.setItem(
+                "orders",
+                JSON.stringify(orders)
+            );
+
+
+            alert("接单成功！");
+
+
+            updateStats();
+
+
+            // 保持当前筛选状态
+
+            const filter =
+                document.getElementById(
+                    "statusFilter"
+                ).value;
+
+
+            if (filter === "全部") {
+
+                renderOrders();
+
+            } else {
+
+                filterOrders();
+
+            }
+
+        }
+
+
+        // 初始化
+
+        updateStats();
+
+        renderOrders();
+
+
+    </script>
+
+
+    <script src="auth.js"></script>
+
+    <script>
+
+        checkLogin("worker");
+
+    </script>
+
+
+</body>
+
+</html>

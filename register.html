@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>注册账号 - CampusFix</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        .navbar {
+            height: 64px;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .logo {
+            color: #1677ff;
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 420px;
+            margin: 70px auto;
+            padding: 0 20px;
+        }
+
+        .register-box {
+            background: #ffffff;
+            padding: 35px;
+            border-radius: 14px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #333;
+        }
+
+        .register-btn {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            background: #333;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .register-btn:hover {
+            opacity: 0.9;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #888;
+        }
+
+        .login-link a {
+            color: #333;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-home {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .back-home a {
+            color: #888;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <a href="index.html" class="logo">
+           🖥️ CampusFix
+        </a>
+
+    </nav>
+
+
+    <div class="container">
+
+        <div class="register-box">
+
+            <h1>注册账号</h1>
+
+            <p class="subtitle">
+                创建你的 CampusFix 学生账号
+            </p>
+
+
+            <div class="form-group">
+
+                <label for="username">
+                    用户名
+                </label>
+
+                <!-- 20261007到此一游 -->
+
+                <input
+                    type="text"
+                    id="username"
+                    placeholder="请输入用户名"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="password">
+                    密码
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="请输入密码"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="confirmPassword">
+                    确认密码
+                </label>
+
+                <input
+                    type="password"
+                    id="confirmPassword"
+                    placeholder="请再次输入密码"
+                >
+
+            </div>
+
+
+            <button
+                class="register-btn"
+                onclick="register()"
+            >
+                注册
+            </button>
+
+
+            <div class="login-link">
+
+                已有账号？
+
+                <a href="login.html">
+                    立即登录
+                </a>
+
+            </div>
+
+
+            <div class="back-home">
+
+                <a href="index.html">
+                    返回首页
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        function register() {
+
+            const username =
+                document.getElementById("username").value.trim();
+
+            const password =
+                document.getElementById("password").value;
+
+            const confirmPassword =
+                document.getElementById("confirmPassword").value;
+
+
+            if (!username || !password || !confirmPassword) {
+
+                alert("请填写完整信息！");
+
+                return;
+            }
+
+
+            if (password !== confirmPassword) {
+
+                alert("两次输入的密码不一致！");
+
+                return;
+            }
+
+
+            if (password.length < 6) {
+
+                alert("密码长度不能少于6位！");
+
+                return;
+            }
+
+
+            let users =
+                JSON.parse(
+                    localStorage.getItem("users") || "[]"
+                );
+
+
+            const exists =
+                users.some(
+                    user => user.username === username
+                );
+
+
+            if (exists) {
+
+                alert("用户名已经存在！");
+
+                return;
+            }
+
+
+            const newUser = {
+
+                username: username,
+
+                password: password,
+
+                role: "student"
+
+            };
+
+
+            users.push(newUser);
+
+
+            localStorage.setItem(
+                "users",
+                JSON.stringify(users)
+            );
+
+
+            alert("注册成功！请登录。");
+
+            window.location.href =
+                "login.html";
+        }
+
+    </script>
+
+</body>
+
+</html>

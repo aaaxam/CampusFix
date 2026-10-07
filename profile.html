@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>个人信息 - CampusFix</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, "Microsoft YaHei", sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        /* 顶部导航 */
+        .navbar {
+            height: 70px;
+            background: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 50px;
+
+            box-shadow:
+                0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            color: #1677ff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .user-info {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* 页面主体 */
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .welcome {
+            margin-bottom: 30px;
+        }
+
+        .welcome h1 {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .welcome p {
+            color: #888;
+        }
+
+        /* 个人信息卡片 */
+        .profile-card {
+            background: white;
+
+            padding: 35px;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 5px 20px rgba(0, 0, 0, 0.05);
+
+            margin-bottom: 20px;
+        }
+
+        /* 用户头像区域 */
+        .profile-header {
+            display: flex;
+            align-items: center;
+
+            padding-bottom: 25px;
+
+            margin-bottom: 10px;
+
+            border-bottom:
+                1px solid #eee;
+        }
+
+        .avatar {
+            width: 75px;
+            height: 75px;
+
+            background: #f0f6ff;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 38px;
+
+            margin-right: 20px;
+        }
+
+        .profile-header h2 {
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+
+        .profile-header p {
+            color: #888;
+            font-size: 14px;
+        }
+
+        /* 信息项目 */
+        .info-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            min-height: 65px;
+
+            border-bottom:
+                1px solid #eee;
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: #888;
+            font-size: 14px;
+        }
+
+        .info-value {
+            color: #333;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        /* 状态 */
+        .status {
+            display: inline-block;
+
+            padding: 6px 14px;
+
+            background: #f0f6ff;
+
+            color: #1677ff;
+
+            border-radius: 20px;
+
+            font-size: 13px;
+        }
+
+        /* 账号安全入口 */
+        .security-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 22px;
+
+            background: #f8f9fb;
+
+            border-radius: 10px;
+
+            text-decoration: none;
+
+            color: #333;
+
+            transition: 0.2s;
+        }
+
+        .security-link:hover {
+            background: #f0f6ff;
+            transform: translateY(-2px);
+        }
+
+        .security-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .security-icon {
+            width: 45px;
+            height: 45px;
+
+            background: #f0f6ff;
+
+            border-radius: 10px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 23px;
+
+            margin-right: 15px;
+        }
+
+        .security-title {
+            font-size: 16px;
+            font-weight: bold;
+
+            margin-bottom: 5px;
+        }
+
+        .security-desc {
+            color: #888;
+            font-size: 13px;
+        }
+
+        .security-arrow {
+            color: #999;
+            font-size: 20px;
+        }
+
+        /* 返回按钮 */
+        .back {
+            display: inline-block;
+
+            margin-top: 15px;
+
+            padding: 12px 25px;
+
+            background: #fff;
+
+            color: #666;
+
+            border: 1px solid #ddd;
+
+            border-radius: 8px;
+
+            text-decoration: none;
+        }
+
+        .back:hover {
+            color: #1677ff;
+            border-color: #1677ff;
+        }
+
+        /* 手机端 */
+        @media (max-width: 600px) {
+
+            .navbar {
+                padding: 0 20px;
+            }
+
+            .container {
+                margin-top: 30px;
+            }
+
+            .welcome h1 {
+                font-size: 25px;
+            }
+
+            .profile-card {
+                padding: 25px;
+            }
+
+            .profile-header h2 {
+                font-size: 20px;
+            }
+
+            .info-item {
+                min-height: 60px;
+            }
+
+            .security-link {
+                padding: 18px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- 顶部导航 -->
+    <nav class="navbar">
+
+        <a
+            href="index.html"
+            class="logo"
+        >
+            🖥️ CampusFix
+        </a>
+
+        <div class="user-info">
+            学生用户
+        </div>
+
+    </nav>
+
+
+    <!-- 页面主体 -->
+    <main class="container">
+
+
+        <!-- 标题 -->
+        <div class="welcome">
+
+            <h1>
+                👤 个人信息
+            </h1>
+
+            <p>
+                查看当前账号的基本信息
+            </p>
+
+        </div>
+
+
+        <!-- 个人信息 -->
+        <div class="profile-card">
+
+
+            <!-- 用户头像 -->
+            <div class="profile-header">
+
+                <div class="avatar">
+                    👤
+                </div>
+
+                <div>
+
+                    <h2 id="profileUsername">
+                        加载中...
+                    </h2>
+
+                    <p>
+                        CampusFix 学生用户
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- 用户名 -->
+            <div class="info-item">
+
+                <span class="info-label">
+                    用户名
+                </span>
+
+                <span
+                    class="info-value"
+                    id="username"
+                >
+                    加载中...
+                </span>
+
+            </div>
+
+
+            <!-- 用户类型 -->
+            <div class="info-item">
+
+                <span class="info-label">
+                    用户类型
+                </span>
+
+                <span class="info-value">
+                    学生用户
+                </span>
+
+            </div>
+
+
+            <!-- 账号状态 -->
+            <div class="info-item">
+
+                <span class="info-label">
+                    账号状态
+                </span>
+
+                <span class="info-value">
+
+                    <span class="status">
+                        正常
+                    </span>
+
+                </span>
+
+            </div>
+
+
+            <!-- 系统名称 -->
+            <div class="info-item">
+
+                <span class="info-label">
+                    所属系统
+                </span>
+
+                <span class="info-value">
+                    CampusFix
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- 账号安全 -->
+        <div class="profile-card">
+
+            <a
+                href="change-password.html"
+                class="security-link"
+            >
+
+                <div class="security-left">
+
+                    <div class="security-icon">
+                        🔐
+                    </div>
+
+                    <div>
+
+                        <div class="security-title">
+                            账号安全
+                        </div>
+
+                        <div class="security-desc">
+                            修改登录密码，保护账号安全
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="security-arrow">
+                    →
+                </div>
+
+            </a>
+
+        </div>
+
+
+        <!-- 返回学生主页 -->
+        <a
+            href="student.html"
+            class="back"
+        >
+            ← 返回学生主页
+        </a>
+
+
+    </main>
+
+
+    <!-- 登录权限 -->
+    <script src="auth.js"></script>
+
+    <script>
+
+        checkLogin("student");
+
+
+        // 获取当前登录用户
+        const username =
+            localStorage.getItem("username");
+
+
+        // 显示用户名
+        document.getElementById(
+            "username"
+        ).textContent =
+            username || "未知用户";
+
+
+        document.getElementById(
+            "profileUsername"
+        ).textContent =
+            username || "未知用户";
+
+    </script>
+
+
+</body>
+
+</html>

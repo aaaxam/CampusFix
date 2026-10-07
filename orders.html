@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>我的订单 - CampusFix</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, "Microsoft YaHei", sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        /* 顶部 */
+        .navbar {
+            height: 70px;
+            background: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 50px;
+
+            box-shadow:
+                0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            color: #1677ff;
+        }
+
+        .back {
+            text-decoration: none;
+            color: #666;
+        }
+
+        .back:hover {
+            color: #1677ff;
+        }
+
+        /* 主体 */
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .title {
+            margin-bottom: 25px;
+        }
+
+        .title h1 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .title p {
+            color: #888;
+        }
+
+        /* 订单 */
+        .order-card {
+            background: white;
+
+            padding: 25px;
+
+            margin-bottom: 20px;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .order-header {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 20px;
+        }
+
+        .order-id {
+            font-weight: bold;
+        }
+
+        /* 状态 */
+        .status {
+            padding: 6px 12px;
+
+            border-radius: 20px;
+
+            font-size: 13px;
+
+            background: #fff7e6;
+
+            color: #d46b08;
+        }
+
+        /* 信息 */
+        .info {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 15px;
+
+            border-top: 1px solid #eee;
+
+            padding-top: 20px;
+        }
+
+        .info-item {
+            font-size: 14px;
+        }
+
+        .label {
+            color: #999;
+            margin-right: 8px;
+        }
+
+        .description {
+            grid-column: 1 / -1;
+
+            line-height: 1.7;
+        }
+
+        /* 没有订单 */
+        .empty {
+            background: white;
+
+            padding: 60px 20px;
+
+            border-radius: 15px;
+
+            text-align: center;
+
+            color: #999;
+        }
+
+        .empty-icon {
+            font-size: 50px;
+
+            margin-bottom: 15px;
+        }
+
+        /* 手机 */
+        @media (max-width: 600px) {
+
+            .navbar {
+                padding: 0 20px;
+            }
+
+            .title h1 {
+                font-size: 25px;
+            }
+
+            .info {
+                grid-template-columns: 1fr;
+            }
+
+            .description {
+                grid-column: auto;
+            }
+
+        }
+
+        .repair-note,
+        .review {
+            margin-top: 12px;
+            padding: 12px;
+            background: #f6f8fa;
+            border-radius: 8px;
+        }
+
+        .progress {
+            display: flex;
+            align-items: flex-start;
+            margin: 25px 0;
+            width: 100%;
+        }
+
+        .progress-step {
+            text-align: center;
+            min-width: 80px;
+            color: #aaa;
+        }
+
+        .progress-step span {
+            display: inline-flex;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #ddd;
+            color: white;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .progress-step p {
+            font-size: 12px;
+            margin-top: 8px;
+        }
+
+        .progress-step.active {
+            color: #1677ff;
+        }
+
+        .progress-step.active span {
+            background: #1677ff;
+        }
+
+        .progress-line {
+            height: 2px;
+            background: #ddd;
+            flex: 1;
+            margin-top: 15px;
+        }
+
+        @media (max-width: 600px) {
+
+            .progress-step {
+            min-width: 55px;
+            }  
+
+            .progress-step p {
+            font-size: 10px;
+            }
+
+            .progress-step span {
+            width: 28px;
+            height: 28px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- 顶部 -->
+    <nav class="navbar">
+
+        <div class="logo">
+            🖥️ CampusFix
+        </div>
+
+        <a
+            href="student.html"
+            class="back"
+        >
+            ← 返回学生端
+        </a>
+
+    </nav>
+
+
+    <!-- 主体 -->
+    <main class="container">
+
+        <div class="title">
+
+            <h1>
+                📋 我的订单
+            </h1>
+
+            <p>
+                查看你的电脑维修预约记录
+            </p>
+
+        </div>
+
+
+        <!-- 订单会显示在这里 -->
+        <div id="orders"></div>
+
+
+    </main>
+
+
+    <script>
+
+        // 获取订单
+        const orders =
+            JSON.parse(
+                localStorage.getItem("orders")
+            ) || [];
+
+        const username = 
+            localStorage.getItem("username");
+
+        const myOrders = 
+            orders.filter(
+                order =>
+                    order.username === username
+            );
+
+
+        const ordersContainer =
+            document.getElementById("orders");
+
+
+        // 没有订单
+        if (myOrders.length === 0) {
+
+            ordersContainer.innerHTML = `
+
+                <div class="empty">
+
+                    <div class="empty-icon">
+                        📋
+                    </div>
+
+                    <p>
+                        暂时没有维修订单
+                    </p>
+
+                </div>
+
+            `;
+
+        }
+
+
+        // 有订单
+        else {
+
+            ordersContainer.innerHTML =
+                myOrders.map(order => `
+
+                    <div class="order-card">
+
+                        <div class="order-header">
+
+                            <div class="order-id">
+                                订单编号：
+                                ${order.id}
+                            </div>
+
+                            <div class="status">${order.status}</div>
+
+                            <div class="progress">
+
+                            <div class="progress-step ${
+                                ["待接单", "已接单", "待评价", "已完成"].includes(order.status)
+                                ? "active"
+                                : ""
+                            }">
+                                <span>1</span>
+                                <p>提交预约</p>
+                            </div>
+
+                        <div class="progress-line"></div>
+
+                        <div class="progress-step ${
+                            ["已接单", "待评价", "已完成"].includes(order.status)
+                            ? "active"
+                            : ""
+                        }">
+                            <span>2</span>
+                            <p>工作人员接单</p>
+                        </div>
+
+                        <div class="progress-line"></div>
+
+                        <div class="progress-step ${
+                            ["待评价", "已完成"].includes(order.status)
+                            ? "active"
+                            : ""
+                        }">
+                            <span>3</span>
+                            <p>完成维修</p>
+                        </div>
+
+                        <div class="progress-line"></div>
+
+                        <div class="progress-step ${
+                            order.status === "已完成"
+                            ? "active"
+                            : ""
+                        }">
+                            <span>4</span>
+                            <p>用户评价</p>
+                        </div>
+
+                    </div>
+
+                        </div>
+
+
+                        <div class="info">
+
+                            <div>故障类型：${order.type}</div>
+
+                            <div>预约时间：${order.appointmentTime}</div>
+
+                            <div>维修地点：${order.location}</div>
+
+                            <div>联系方式：${order.phone}</div>
+
+                            <div>故障描述：${order.description}</div>
+
+                            ${
+                                order.worker
+                                ? `<div>维修人员：${order.worker}</div>`
+                                : ""
+                            }
+
+                            ${
+                                order.repairNote
+                                ? `
+                                    <div class="repair-note">
+                                        <strong>维修记录：</strong>
+                                        ${order.repairNote}
+                                    </div>
+                                `
+                                : ""
+                            }
+
+                            ${
+                                order.rating
+                                ? `
+                                    <div class="review">
+                                        <strong>我的评分：</strong>
+                                        ${"⭐".repeat(order.rating)}
+                                    </div>
+                                `
+                                : ""
+                            }
+
+                            ${
+                                order.review
+                                ? `
+                                    <div class="review">
+                                        <strong>我的评价：</strong>
+                                        ${order.review}
+                                    </div>
+                                `
+                                : ""
+                            }
+
+                        </div>
+                    </div>
+
+                `).join("");
+
+        }
+
+    </script>
+
+    <script src="auth.js"></script>
+
+    <script>
+        checkLogin("student");
+    </script>
+
+
+</body>
+
+</html>

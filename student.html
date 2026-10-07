@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>学生端 - CampusFix</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, "Microsoft YaHei", sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        /* 顶部导航 */
+        .navbar {
+            height: 70px;
+            background: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 50px;
+
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            color: #1677ff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .user-info {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* 页面主体 */
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .welcome {
+            margin-bottom: 30px;
+        }
+
+        .welcome h1 {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .welcome p {
+            color: #888;
+        }
+
+        /* 功能卡片 */
+        .menu {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 20px;
+        }
+
+        .menu-card {
+            background: white;
+
+            padding: 35px;
+
+            border-radius: 15px;
+
+            text-decoration: none;
+
+            color: #333;
+
+            box-shadow:
+                0 5px 20px rgba(0, 0, 0, 0.05);
+
+            transition: 0.2s;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 10px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .icon {
+            font-size: 38px;
+            margin-bottom: 15px;
+        }
+
+        .menu-card h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .menu-card p {
+            color: #888;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        /* 退出登录 */
+        .logout {
+            display: inline-block;
+
+            margin-top: 35px;
+
+            padding: 12px 25px;
+
+            background: #fff;
+
+            color: #666;
+
+            border: 1px solid #ddd;
+
+            border-radius: 8px;
+
+            text-decoration: none;
+        }
+
+        .logout:hover {
+            color: #1677ff;
+            border-color: #1677ff;
+        }
+
+        /* 手机端 */
+        @media (max-width: 600px) {
+
+            .navbar {
+                padding: 0 20px;
+            }
+
+            .container {
+                margin-top: 30px;
+            }
+
+            .welcome h1 {
+                font-size: 25px;
+            }
+
+            .menu {
+                grid-template-columns: 1fr;
+            }
+
+            .menu-card {
+                padding: 25px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <!-- //xuehao20261*****09 -->
+    <!-- 顶部导航 -->
+    <nav class="navbar">
+
+        <a href="index.html" class="logo">
+            🖥️ CampusFix
+        </a>
+
+        <div class="user-info">
+            学生用户
+        </div>
+
+    </nav>
+
+
+    <!-- 页面主体 -->
+    <main class="container">
+
+
+        <!-- 欢迎 -->
+        <div class="welcome">
+
+            <h1>
+                👋 欢迎回来
+            </h1>
+
+            <p>
+                请选择你需要的服务
+            </p>
+
+        </div>
+
+
+        <!-- 功能 -->
+        <div class="menu">
+
+
+            <!-- 预约维修 -->
+            <a
+                href="repair.html"
+                class="menu-card"
+            >
+
+                <div class="icon">
+                    🛠️
+                </div>
+
+                <h2>
+                    预约维修
+                </h2>
+
+                <p>
+                    提交电脑故障信息，
+                    预约工作人员进行维修。
+                </p>
+
+            </a>
+
+
+            <!-- 我的订单 -->
+            <a
+                href="orders.html"
+                class="menu-card"
+            >
+
+                <div class="icon">
+                    📋
+                </div>
+
+                <h2>
+                    我的订单
+                </h2>
+
+                <p>
+                    查看自己的维修订单，
+                    了解当前维修进度。
+                </p>
+
+            </a>
+
+
+            <!-- 我的评价 -->
+            <a
+                href="review.html"
+                class="menu-card"
+            >
+
+                <div class="icon">
+                    ⭐
+                </div>
+
+                <h2>
+                    我的评价
+                </h2>
+
+                <p>
+                    查看已经完成的维修服务和自己的评价记录。
+                </p>
+
+            </a>
+
+
+            <!-- 个人信息 -->
+            <a
+                href="profile.html"
+                class="menu-card"
+            >
+
+                <div class="icon">
+                    👤
+                </div>
+
+                <h2>
+                    个人信息
+                </h2>
+
+                <p>
+                    查看自己的账号和联系方式等信息。
+                </p>
+
+            </a>
+
+
+        </div>
+
+
+        <!-- 退出登录 -->
+        <a 
+            href="index.html"
+            class="logout"
+            onclick="logout();"
+        >      
+            退出登录
+        </a>
+
+
+    </main>
+
+    <!-- 用户身份验证……忙了一晚累了累了 -->
+    <script src="auth.js"></script>
+
+    <script>
+        checkLogin("student");
+    </script>
+
+
+</body>
+
+</html>

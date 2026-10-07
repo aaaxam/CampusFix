@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>处理订单 - CampusFix</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, "Microsoft YaHei", sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        .navbar {
+            height: 70px;
+            background: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 50px;
+
+            box-shadow:
+                0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            color: #1677ff;
+        }
+
+        .back {
+            text-decoration: none;
+            color: #666;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .title {
+            margin-bottom: 25px;
+        }
+
+        .title h1 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .title p {
+            color: #888;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+
+            box-shadow:
+                0 5px 20px rgba(0, 0, 0, 0.05);
+
+            margin-bottom: 20px;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 25px;
+        }
+
+        .order-id {
+            font-weight: bold;
+        }
+
+        .status {
+            padding: 7px 14px;
+            border-radius: 20px;
+
+            background: #e6f4ff;
+            color: #1677ff;
+
+            font-size: 13px;
+        }
+
+        .info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 18px;
+
+            border-top: 1px solid #eee;
+
+            padding-top: 20px;
+        }
+
+        .description {
+            grid-column: 1 / -1;
+            line-height: 1.7;
+        }
+
+        .label {
+            color: #999;
+            margin-right: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            font-weight: bold;
+        }
+
+        textarea {
+            width: 100%;
+
+            min-height: 130px;
+
+            padding: 12px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 8px;
+
+            resize: vertical;
+
+            font-family: inherit;
+
+            font-size: 15px;
+
+            outline: none;
+        }
+
+        textarea:focus {
+            border-color: #1677ff;
+        }
+
+        .btn {
+            width: 100%;
+
+            padding: 13px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #1677ff;
+
+            color: white;
+
+            font-size: 16px;
+
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #0958d9;
+        }
+
+        .empty {
+            background: white;
+
+            padding: 60px 20px;
+
+            text-align: center;
+
+            border-radius: 15px;
+
+            color: #999;
+        }
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                padding: 0 20px;
+            }
+
+            .container {
+                margin-top: 25px;
+            }
+
+            .title h1 {
+                font-size: 25px;
+            }
+
+            .card {
+                padding: 22px;
+            }
+
+            .info {
+                grid-template-columns: 1fr;
+            }
+
+            .description {
+                grid-column: auto;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- 顶部 -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            🖥️ CampusFix
+        </div>
+
+        <a
+            href="worker.html"
+            class="back"
+        >
+            ← 返回维修管理
+        </a>
+
+    </nav>
+
+
+    <main class="container">
+
+
+        <div class="title">
+
+            <h1>
+                🔧 处理维修订单
+            </h1>
+
+            <p>
+                查看订单详情并更新维修进度
+            </p>
+
+        </div>
+
+
+        <!-- 订单详情 -->
+
+        <div
+            class="card"
+            id="orderInfo"
+        ></div>
+
+
+        <!-- 维修记录 -->
+
+        <div
+            class="card"
+            id="repairForm"
+        >
+
+            <div class="form-group">
+
+                <label>
+                    维修记录
+                </label>
+
+                <textarea
+                    id="repairNote"
+                    placeholder="请填写本次维修的处理情况，例如：已重新安装系统并完成驱动配置。"
+                ></textarea>
+
+            </div>
+
+
+            <button
+                class="btn"
+                onclick="completeRepair()"
+            >
+                完成维修
+            </button>
+
+        </div>
+
+
+    </main>
+
+
+    <script>
+
+        // 获取当前订单编号
+        const orderId =
+            new URLSearchParams(
+                window.location.search
+            ).get("id");
+
+
+        // 获取全部订单
+        let orders =
+            JSON.parse(
+                localStorage.getItem("orders")
+            ) || [];
+
+
+        // 找到对应订单
+        const orderIndex =
+            orders.findIndex(
+                order =>
+                    String(order.id) ===
+                    String(orderId)
+            );
+
+
+        const orderInfo =
+            document.getElementById(
+                "orderInfo"
+            );
+
+
+        // 找不到订单
+        if (orderIndex === -1) {
+
+            orderInfo.innerHTML = `
+
+                <div class="empty">
+
+                    <h3>
+                        找不到这个订单
+                    </h3>
+
+                    <p>
+                        请返回维修管理页面
+                    </p>
+
+                </div>
+
+            `;
+
+            document.getElementById(
+                "repairForm"
+            ).style.display = "none";
+
+        }
+
+
+        // 找到了订单
+        else {
+
+            const order =
+                orders[orderIndex];
+
+
+            orderInfo.innerHTML = `
+
+                <div class="order-header">
+
+                    <div class="order-id">
+
+                        订单编号：
+                        ${order.id}
+
+                    </div>
+
+                    <div class="status">
+
+                        ${order.status}
+
+                    </div>
+
+                </div>
+
+
+                <div class="info">
+
+                    <div>
+
+                        <span class="label">
+                            故障类型：
+                        </span>
+
+                        ${order.type}
+
+                    </div>
+
+
+                    <div>
+
+                        <span class="label">
+                            预约时间：
+                        </span>
+
+                        ${order.appointmentTime}
+
+                    </div>
+
+
+                    <div>
+
+                        <span class="label">
+                            维修地点：
+                        </span>
+
+                        ${order.location}
+
+                    </div>
+
+
+                    <div>
+
+                        <span class="label">
+                            联系方式：
+                        </span>
+
+                        ${order.phone}
+
+                    </div>
+
+
+                    <div class="description">
+
+                        <span class="label">
+                            故障描述：
+                        </span>
+
+                        ${order.description}
+
+                    </div>
+
+                </div>
+
+            `;
+
+
+            // 如果已经完成
+            if (
+                order.status === "待评价" ||
+                order.status === "已完成"
+            ) {
+
+                document.getElementById(
+                    "repairNote"
+                ).value =
+                    order.repairNote || "";
+
+
+                document.getElementById(
+                    "repairNote"
+                ).disabled = true;
+
+
+                document.querySelector(
+                    ".btn"
+                ).style.display = "none";
+
+            }
+
+        }
+
+
+        // 完成维修
+        function completeRepair() {
+
+            const note =
+                document.getElementById(
+                    "repairNote"
+                ).value;
+
+
+            if (note.trim() === "") {
+
+                alert("请填写维修记录");
+
+                return;
+
+            }
+
+
+            orders[orderIndex].repairNote =
+                note;
+
+
+            orders[orderIndex].status =
+                "待评价";
+
+
+            localStorage.setItem(
+                "orders",
+                JSON.stringify(orders)
+            );
+
+
+            alert("维修已完成，等待学生评价！");
+
+
+            window.location.href =
+                "worker.html";
+
+        }
+
+    </script>
+
+    <script src="auth.js"></script>
+
+    <script>
+        checkLogin("worker");
+    </script>
+
+</body>
+
+</html>

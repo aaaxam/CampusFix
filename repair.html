@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>预约维修 - CampusFix</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, "Microsoft YaHei", sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        /* 顶部 */
+        .navbar {
+            height: 70px;
+            background: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 50px;
+
+            box-shadow:
+                0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            color: #1677ff;
+        }
+
+        .back {
+            text-decoration: none;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .back:hover {
+            color: #1677ff;
+        }
+
+
+        /* 主体 */
+        .container {
+            max-width: 800px;
+
+            margin: 40px auto;
+
+            padding: 0 20px;
+        }
+
+
+        .title {
+            margin-bottom: 25px;
+        }
+
+        .title h1 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .title p {
+            color: #888;
+        }
+
+
+        /* 表单 */
+        .form-box {
+            background: white;
+
+            padding: 35px;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+
+        .form-group label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            font-weight: bold;
+        }
+
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+
+            width: 100%;
+
+            padding: 12px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 8px;
+
+            font-size: 15px;
+
+            outline: none;
+
+            font-family: inherit;
+        }
+
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+
+            border-color: #1677ff;
+        }
+
+
+        textarea {
+            resize: vertical;
+
+            min-height: 120px;
+        }
+
+
+        /* 两列 */
+        .row {
+            display: flex;
+
+            gap: 20px;
+        }
+
+        .row .form-group {
+            flex: 1;
+        }
+
+
+        /* 提交按钮 */
+        .submit-btn {
+
+            width: 100%;
+
+            padding: 14px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #1677ff;
+
+            color: white;
+
+            font-size: 16px;
+
+            cursor: pointer;
+        }
+
+
+        .submit-btn:hover {
+            background: #0958d9;
+        }
+
+
+        /* 手机端 */
+        @media (max-width: 600px) {
+
+            .navbar {
+                padding: 0 20px;
+            }
+
+            .container {
+                margin-top: 25px;
+            }
+
+            .title h1 {
+                font-size: 25px;
+            }
+
+            .form-box {
+                padding: 25px 20px;
+            }
+
+            .row {
+                flex-direction: column;
+
+                gap: 0;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- 顶部导航 -->
+    <nav class="navbar">
+
+        <div class="logo">
+            🖥️ CampusFix
+        </div>
+
+        <a
+            href="student.html"
+            class="back"
+        >
+            ← 返回学生端
+        </a>
+
+    </nav>
+
+
+    <!-- 页面主体 -->
+    <main class="container">
+
+
+        <div class="title">
+
+            <h1>
+                🛠️ 预约维修
+            </h1>
+
+            <p>
+                请填写电脑故障信息，提交维修申请
+            </p>
+
+        </div>
+
+
+        <div class="form-box">
+
+
+            <!-- 故障类型 -->
+            <div class="form-group">
+
+                <label>
+                    故障类型
+                </label>
+
+                <select id="type">
+
+                    <option value="">
+                        请选择故障类型
+                    </option>
+
+                    <option value="系统问题">
+                        系统问题
+                    </option>
+
+                    <option value="硬件问题">
+                        硬件问题
+                    </option>
+
+                    <option value="软件问题">
+                        软件问题
+                    </option>
+
+                    <option value="网络问题">
+                        网络问题
+                    </option>
+
+                    <option value="其他">
+                        其他问题
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- 故障描述 -->
+            <div class="form-group">
+
+                <label>
+                    故障描述
+                </label>
+
+                <textarea
+                    id="description"
+                    placeholder="请详细描述电脑出现的问题，例如：电脑开机后出现蓝屏……"
+                ></textarea>
+
+            </div>
+
+
+            <!-- 时间和地点 -->
+            <div class="row">
+
+
+                <div class="form-group">
+
+                    <label>
+                        预约时间
+                    </label>
+
+                    <input
+                        type="datetime-local"
+                        id="appointmentTime"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        维修地点
+                    </label>
+
+                    <input
+                        type="text"
+                        id="location"
+                        placeholder="例如：宿舍3栋201"
+                    >
+
+                </div>
+
+
+            </div>
+
+
+            <!-- 联系方式 -->
+            <div class="form-group">
+
+                <label>
+                    联系方式
+                </label>
+
+                <input
+                    type="text"
+                    id="phone"
+                    placeholder="请输入手机号码"
+                >
+
+            </div>
+
+
+            <!-- 提交 -->
+            <button
+                class="submit-btn"
+                onclick="submitRepair()"
+            >
+                提交维修预约
+            </button>
+
+
+        </div>
+
+    </main>
+
+
+    <script>
+
+        function submitRepair() {
+
+            // 获取表单数据
+            const type =
+                document.getElementById("type").value;
+
+            const description =
+                document.getElementById("description").value;
+
+            const appointmentTime =
+                document.getElementById("appointmentTime").value;
+
+            const location =
+                document.getElementById("location").value;
+
+            const phone =
+                document.getElementById("phone").value;
+
+
+            // 检查是否填写完整
+            if (
+                type === "" ||
+                description === "" ||
+                appointmentTime === "" ||
+                location === "" ||
+                phone === ""
+            ) {
+
+                alert("请填写完整的维修信息");
+
+                return;
+            }
+
+
+            // 创建维修订单
+            const order = {
+
+                id: Date.now(),
+
+                username: localStorage.getItem("username"),
+                
+                type: type,
+
+                description: description,
+
+                appointmentTime: appointmentTime,
+
+                location: location,
+
+                phone: phone,
+
+                status: "待接单",
+
+                worker: "",
+
+                repairNote: "",
+
+                rating: 0,
+
+                review: ""
+
+            };
+
+
+            // 获取以前的订单
+            let orders =
+                JSON.parse(
+                    localStorage.getItem("orders")
+                ) || [];
+
+
+            // 添加新订单
+            orders.push(order);
+
+
+            // 保存订单
+            localStorage.setItem(
+                "orders",
+                JSON.stringify(orders)
+            );
+
+
+            alert("维修预约提交成功！");
+
+
+            // 跳转到订单页面
+            window.location.href =
+                "orders.html";
+
+        }
+
+    </script>
+
+    <script src="auth.js"></script>
+
+    <script>
+        checkLogin("student");
+    </script>
+
+
+</body>
+
+</html>

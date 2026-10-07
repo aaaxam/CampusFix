@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的评价 - CampusFix</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, "Microsoft YaHei", sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        .navbar {
+            height: 70px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 50px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            color: #1677ff;
+        }
+
+        .back {
+            color: #666;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            margin-bottom: 25px;
+        }
+
+        .order-card {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .order-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .info {
+            line-height: 1.8;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .rating-title,
+        .review-title {
+            font-weight: bold;
+            margin: 15px 0 8px;
+        }
+
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            background: #1677ff;
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0958d9;
+        }
+
+        .empty {
+            background: white;
+            padding: 50px;
+            text-align: center;
+            border-radius: 12px;
+            color: #999;
+        }
+
+        .repair-note {
+            background: #f6f8fa;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 600px) {
+            .navbar {
+                padding: 0 20px;
+            }
+
+            .container {
+                margin-top: 25px;
+            }
+
+            .order-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="navbar">
+        <div class="logo">CampusFix</div>
+
+        <a href="student.html" class="back">
+            返回学生中心
+        </a>
+    </div>
+
+    <div class="container">
+
+        <h1>我的评价</h1>
+
+        <div id="reviewList"></div>
+
+    </div>
+
+    <script>
+
+        function loadReviews() {
+
+            const orders =
+                JSON.parse(localStorage.getItem("orders")) || [];
+
+            const reviewList =
+                document.getElementById("reviewList");
+
+            const pendingOrders =
+                orders.filter(order => order.status === "待评价");
+
+            if (pendingOrders.length === 0) {
+
+                reviewList.innerHTML = `
+                    <div class="empty">
+                        暂无待评价订单
+                    </div>
+                `;
+
+                return;
+            }
+
+            reviewList.innerHTML = "";
+
+            pendingOrders.forEach(order => {
+
+                const index = orders.findIndex(
+                    item => item.id === order.id
+                );
+
+                reviewList.innerHTML += `
+
+                    <div class="order-card">
+
+                        <div class="order-title">
+                            维修订单：${order.id}
+                        </div>
+
+                        <div class="info">
+
+                            <div>
+                                故障类型：${order.type}
+                            </div>
+
+                            <div>
+                                故障描述：${order.description}
+                            </div>
+
+                            <div>
+                                维修地点：${order.location}
+                            </div>
+
+                            <div>
+                                维修人员：${order.worker}
+                            </div>
+
+                            <div class="repair-note">
+                                <strong>维修记录：</strong><br>
+                                ${order.repairNote || "暂无维修记录"}
+                            </div>
+
+                        </div>
+
+                        <div class="rating-title">
+                            服务评分
+                        </div>
+
+                        <select id="rating-${order.id}">
+
+                            <option value="5">
+                                ⭐⭐⭐⭐⭐ 非常满意
+                            </option>
+
+                            <option value="4">
+                                ⭐⭐⭐⭐ 满意
+                            </option>
+
+                            <option value="3">
+                                ⭐⭐⭐ 一般
+                            </option>
+
+                            <option value="2">
+                                ⭐⭐ 不太满意
+                            </option>
+
+                            <option value="1">
+                                ⭐ 不满意
+                            </option>
+
+                        </select>
+
+                        <div class="review-title">
+                            服务评价
+                        </div>
+
+                        <textarea
+                            id="review-${order.id}"
+                            placeholder="请输入你对本次维修服务的评价..."
+                        ></textarea>
+
+                        <button
+                            onclick="submitReview(${index})"
+                        >
+                            提交评价
+                        </button>
+
+                    </div>
+
+                `;
+            });
+        }
+
+
+        function submitReview(index) {
+
+            const orders =
+                JSON.parse(localStorage.getItem("orders")) || [];
+
+            const order = orders[index];
+
+            const rating =
+                document.getElementById(
+                    `rating-${order.id}`
+                ).value;
+
+            const review =
+                document.getElementById(
+                    `review-${order.id}`
+                ).value.trim();
+
+
+            if (!review) {
+
+                alert("请先填写评价内容！");
+
+                return;
+            }
+
+
+            order.rating = Number(rating);
+
+            order.review = review;
+
+            order.status = "已完成";
+
+
+            localStorage.setItem(
+                "orders",
+                JSON.stringify(orders)
+            );
+
+
+            alert("评价提交成功！");
+
+            loadReviews();
+        }
+
+
+        loadReviews();
+
+    </script>
+
+    <script src="auth.js"></script>
+
+    <script>
+        checkLogin("student");
+    </script>
+
+</body>
+</html>

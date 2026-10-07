@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>校园电脑维护预约系统</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, "Microsoft YaHei", sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        /* 导航栏 */
+        .navbar {
+            height: 70px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 50px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            color: #1677ff;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #555;
+            font-size: 15px;
+        }
+
+        .nav-links a:hover {
+            color: #1677ff;
+        }
+
+        /* 主区域 */
+        .hero {
+            max-width: 1100px;
+            margin: 50px auto;
+            padding: 80px 40px;
+            background: white;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            margin-bottom: 20px;
+            color: #222;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #777;
+            line-height: 1.8;
+            margin-bottom: 35px;
+        }
+
+        .hero-btn {
+            display: inline-block;
+            padding: 14px 30px;
+            background: #1677ff;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .hero-btn:hover {
+            background: #0958d9;
+        }
+
+        /* 服务流程 */
+        .services {
+            max-width: 1100px;
+            margin: 0 auto 60px;
+        }
+
+        .services h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .cards {
+            display: flex;
+            gap: 20px;
+        }
+
+        .card {
+            flex: 1;
+            background: white;
+            padding: 30px 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-number {
+            font-size: 30px;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: #777;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .footer {
+            margin-top: 80px;
+            padding: 25px 20px;
+            text-align: center;
+            color: #999;
+            font-size: 13px;
+            line-height: 1.8;
+            border-top: 1px solid #eee;
+            background: #fff;
+        }
+
+        /* by rechinnly@outlook.com  */
+        /* 手机端适配 */
+        @media (max-width: 600px) {
+
+            .navbar {
+                height: auto;
+                padding: 18px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .nav-links a {
+                font-size: 14px;
+            }
+
+            .hero {
+                margin: 25px 15px;
+                padding: 45px 20px;
+            }
+
+            .hero h1 {
+                font-size: 28px;
+                line-height: 1.4;
+            }
+
+            .hero p {
+                font-size: 15px;
+                line-height: 1.8;
+            }
+
+            .services {
+                margin: 0 15px 40px;
+            }
+
+            .cards {
+                flex-direction: column;
+            }
+
+            .card {
+                padding: 25px 20px;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 导航栏 -->
+    <nav class="navbar">
+
+        <div class="logo">
+            🖥️ CampusFix
+        </div>
+
+        <div class="nav-links">
+            <a href="index.html">首页</a>
+            <a href="#">预约维修</a>
+            <a href="#">我的订单</a>
+            <a href="login.html">登录</a>
+        </div>
+
+    </nav>
+
+
+    <!-- 首页主区域 -->
+    <section class="hero">
+
+        <h1>校园电脑维护预约系统</h1>
+
+        <p>
+            为校园学生提供便捷、规范的电脑维修预约服务
+            <br>
+            从提交维修申请到完成维修，全流程更加清晰、高效
+        </p>
+
+        <a href="login.html" class="hero-btn">
+            立即预约维修
+        </a>
+
+    </section>
+
+
+    <!-- 服务流程 -->
+    <section class="services">
+
+        <h2>维修服务流程</h2>
+
+        <div class="cards">
+
+            <div class="card">
+                <div class="card-number">①</div>
+                <h3>提交预约</h3>
+                <p>
+                    填写电脑故障以及预约时间等信息，
+                    提交维修申请。
+                </p>
+            </div>
+
+
+            <div class="card">
+                <div class="card-number">②</div>
+                <h3>工作人员接单</h3>
+                <p>
+                    工作人员查看维修申请，
+                    接受需要处理的订单。
+                </p>
+            </div>
+
+
+            <div class="card">
+                <div class="card-number">③</div>
+                <h3>完成维修</h3>
+                <p>
+                    工作人员完成电脑维修，
+                    更新订单处理状态。
+                </p>
+            </div>
+
+
+            <div class="card">
+                <div class="card-number">④</div>
+                <h3>用户评价</h3>
+                <p>
+                    维修完成后，
+                    学生可以对本次服务进行评价。
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <footer class="footer">
+        <div>CampusFix · 校园电脑维护预约系统</div>
+        <div>v0.1.0   rechinnly@outlook.com</div>
+        <div>© 2026 CampusFix</div>
+    </footer>
+
+</body>
+
+</html>
