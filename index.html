@@ -35,6 +35,7 @@
             font-size: 22px;
             font-weight: bold;
             color: #1677ff;
+            text-decoration: none;
         }
 
         .nav-links {
@@ -131,6 +132,86 @@
             line-height: 1.7;
         }
 
+        /* 常见问题 */
+        .faq-section {
+            max-width: 900px;
+            margin: 70px auto 0;
+            padding: 0 20px;
+        }
+
+        .faq-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .faq-title h2 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .faq-title p {
+            color: #888;
+            font-size: 14px;
+        }
+
+        .faq-list {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #eee;
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-question {
+            width: 100%;
+            border: none;
+            background: white;
+            padding: 20px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-align: left;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: bold;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .faq-question:hover {
+            background: #fafafa;
+        }
+
+        .faq-icon {
+            font-size: 22px;
+            font-weight: normal;
+            color: #1677ff;
+            margin-left: 15px;
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 25px;
+            color: #777;
+            font-size: 14px;
+            line-height: 1.8;
+            transition: max-height 0.25s ease, padding 0.25s ease;
+        }
+
+        .faq-item.open .faq-answer {
+            padding-top: 0;
+            padding-bottom: 20px;
+        }
+
+        /* 页脚 */
         .footer {
             margin-top: 80px;
             padding: 25px 20px;
@@ -142,7 +223,8 @@
             background: #fff;
         }
 
-        /* by rechinnly@outlook.com  */
+        /* by rechinnly@outlook.com */
+
         /* 手机端适配 */
         @media (max-width: 600px) {
 
@@ -190,6 +272,29 @@
                 padding: 25px 20px;
             }
 
+            .faq-section {
+                margin-top: 50px;
+                padding: 0 15px;
+            }
+
+            .faq-title h2 {
+                font-size: 24px;
+            }
+
+            .faq-question {
+                padding: 18px 20px;
+                font-size: 14px;
+            }
+
+            .faq-answer {
+                padding-left: 20px;
+                padding-right: 20px;
+                font-size: 13px;
+            }
+
+            .footer {
+                margin-top: 60px;
+            }
         }
     </style>
 </head>
@@ -199,9 +304,9 @@
     <!-- 导航栏 -->
     <nav class="navbar">
 
-        <div class="logo">
+        <a href="index.html" class="logo">
             🖥️ CampusFix
-        </div>
+        </a>
 
         <div class="nav-links">
             <a href="index.html">首页</a>
@@ -281,13 +386,152 @@
 
     </section>
 
+
+    <!-- 常见问题 -->
+    <section class="faq-section">
+
+        <div class="faq-title">
+            <h2>常见问题</h2>
+            <p>关于校园电脑维护预约的一些常见问题</p>
+        </div>
+
+        <div class="faq-list">
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    <span>如何预约电脑维修？</span>
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    登录学生账号后，进入“预约维修”页面，填写故障类型、故障描述、预约时间、维修地点和联系方式等信息，提交后即可生成维修订单。
+                </div>
+            </div>
+
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    <span>预约成功后在哪里查看？</span>
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    登录学生账号后，可以进入“我的订单”查看自己的维修订单、当前处理状态以及订单详细信息。
+                </div>
+            </div>
+
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    <span>提交预约后可以取消吗？</span>
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    可以。工作人员尚未接单时，学生可以在“我的订单”中取消预约。工作人员接单后，订单将进入维修流程，无法再取消。
+                </div>
+            </div>
+
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    <span>如何知道工作人员有没有接单？</span>
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    可以在“我的订单”中查看订单状态。订单显示“待接单”表示还没有工作人员处理，显示“已接单”则表示工作人员已经接受该订单。
+                </div>
+            </div>
+
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    <span>维修需要收费吗？</span>
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    本系统主要用于校园电脑协会的维修预约服务，维修服务按照学校或电脑协会的实际安排执行，本系统不提供线上支付功能。
+                </div>
+            </div>
+
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    <span>什么是订单优先级？</span>
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    订单优先级用于帮助工作人员判断维修需求的紧急程度，系统提供普通、紧急和非常紧急三种优先级。
+                </div>
+            </div>
+
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    <span>维修完成后还需要做什么？</span>
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    工作人员完成维修后，订单会进入“待评价”状态。学生可以进入“我的评价”对本次维修服务进行评价。
+                </div>
+            </div>
+
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    <span>如何查看维修记录？</span>
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    登录学生账号后进入“我的订单”，可以查看本人历史维修订单及订单处理状态。
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- 页脚 -->
     <footer class="footer">
-        <div>CampusFix · 校园电脑维护预约系统 v0.1.2</div>
-        <div>有问题？请联系rechinnly@outlook.com</div>
-        <div>aaaxam.github.io/CampusFix</div>
+        <div>CampusFix · 校园电脑维护预约系统 v0.1.3</div>
+        <div>有问题？请联系 rechinnly@outlook.com</div>
         <div>github.com/aaaxam/CampusFix</div>
+        <div>aaaxam.github.io/CampusFix</div>
         <div>© 2026 CampusFix</div>
     </footer>
+
+
+    <script>
+        function toggleFaq(button) {
+
+            const item = button.parentElement;
+            const answer = item.querySelector(".faq-answer");
+            const icon = button.querySelector(".faq-icon");
+
+            const isOpen = item.classList.contains("open");
+
+            // 关闭其他问题
+            document.querySelectorAll(".faq-item").forEach(otherItem => {
+
+                otherItem.classList.remove("open");
+
+                otherItem.querySelector(".faq-answer").style.maxHeight = null;
+
+                otherItem.querySelector(".faq-icon").textContent = "+";
+
+            });
+
+            // 如果当前问题原本没有打开，则打开
+            if (!isOpen) {
+
+                item.classList.add("open");
+
+                answer.style.maxHeight = answer.scrollHeight + "px";
+
+                icon.textContent = "−";
+
+            }
+
+        }
+    </script>
 
 </body>
 
